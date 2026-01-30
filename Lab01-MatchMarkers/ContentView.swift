@@ -8,35 +8,30 @@
 import SwiftUI
 
 struct MatchMarkersView: View {
+    let game = MasterMindModel()
+    
     var body: some View {
         VStack{
-            pegs(colors:[.red,.green,.yellow], matches: [.exact,.inexact,.inexact])
-            pegs(colors:[.blue,.green,.blue],matches: [.exact,.inexact,.exact])
-            
-            pegs(colors:[.red,.green,.yellow,.blue],matches: [.exact,.inexact,.inexact,.exact])
-            pegs(colors:[.red,.yellow,.red,.green],matches: [.exact,.inexact,.inexact,.noMatch])
-            
-            pegs(colors:[.red,.green,.yellow,.blue,.red],matches: [.exact,.inexact,.inexact,.exact,.inexact])
-            pegs(colors:[.yellow,.green,.blue,.blue,.red],matches: [.exact,.inexact,.inexact,.noMatch,.noMatch])
-            
-            pegs(colors:[.blue,.green,.yellow,.blue,.red,.blue],matches: [.exact,.inexact,.exact,.exact,.exact,.exact])
-            pegs(colors:[.green,.green,.yellow,.blue,.green,.green],matches: [.inexact,.inexact,.inexact,.exact,.noMatch,.noMatch])
+            view(for: game.masterCode)
+            view(for: game.guess)
+//            pegs(colors:[.red, .blue, .yellow, .blue])
             
         }.padding()
     }
     
-    func pegs(colors: Array<Color>, matches: [Match]) -> some View {
+    func view(for code: Code) -> some View {
+        
         HStack {
             ForEach(
-                colors.indices,
+                code.pegs.indices,
                 id: \.self){
                     index in RoundedRectangle(cornerRadius: 10)
                         .aspectRatio(1, contentMode: .fit)
-                        .foregroundStyle(colors[index])
+                        .foregroundStyle(code.pegs[index])
                 }
             
             
-            MatchMarkers(match: matches)
+            MatchMarkers(match: [.exact, .inexact, .inexact, .noMatch])
             
         }.padding()
     }
