@@ -8,15 +8,24 @@
 import SwiftUI
 
 struct MatchMarkersView: View {
-    let game = MasterMindModel()
+    @State var game = MasterMindModel()
     
     var body: some View {
         VStack{
             view(for: game.masterCode)
-            view(for: game.guess)
+            ScrollView{
+                view(for: game.guess)
+                ForEach(game.attempts.indices.reversed(), id: \.self){
+                    index in view(for: game.attempts[index])
+                }
+            }
+            
 //            pegs(colors:[.red, .blue, .yellow, .blue])
             
         }.padding()
+        Button("Guess"){
+            game.recordAttempts()
+        }
     }
     
     func view(for code: Code) -> some View {
@@ -28,10 +37,16 @@ struct MatchMarkersView: View {
                     index in RoundedRectangle(cornerRadius: 10)
                         .aspectRatio(1, contentMode: .fit)
                         .foregroundStyle(code.pegs[index])
+                        .onTapGesture {
+                            if code.kind == .guess {
+                                game.chooseNextPeg(at: index)
+                            }
+                            
+                        }
                 }
             
             
-            MatchMarkers(match: [.exact, .inexact, .inexact, .noMatch])
+            MatchMarkers(match: code.matches)
             
         }.padding()
     }
