@@ -16,8 +16,16 @@ struct MasterMindModel {
     
     mutating func recordAttempts(){
         var attempt = guess
+        var duplicate = false
         attempt.kind = .attempt(attempt.match(against: masterCode))
-        attempts.append(attempt)
+        for i in attempts.indices{
+            if attempts[i].pegs == attempt.pegs{
+                duplicate = true
+            }
+        }
+        if !duplicate{
+            attempts.append(attempt)
+        }
     }
     
     mutating func chooseNextPeg(at index: Int) {
