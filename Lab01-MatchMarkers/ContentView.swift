@@ -23,6 +23,10 @@ struct MatchMarkersView: View {
 //            pegs(colors:[.red, .blue, .yellow, .blue])
             
         }.padding()
+        
+        Button("Restart"){
+            game.restartGame()
+        }.padding(10)
         Button("Guess"){
             game.recordAttempts()
         }

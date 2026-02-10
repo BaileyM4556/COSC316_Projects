@@ -14,10 +14,16 @@ struct MasterMindModel {
     var attempts: [Code] = [Code]()
     var pegChoice: [Peg] = [.red, .blue, .green, .yellow]
     
+    func restartGame(){
+        
+    }
+    
     mutating func recordAttempts(){
         var attempt = guess
         var duplicate = false
         attempt.kind = .attempt(attempt.match(against: masterCode))
+        
+        //If attempt is already in the attempts list, don't add it again.
         for i in attempts.indices{
             if attempts[i].pegs == attempt.pegs{
                 duplicate = true
