@@ -14,8 +14,8 @@ struct MasterMindModel {
     var attempts: [Code] = [Code]()
     var pegChoice: [Peg] = [.red, .blue, .green, .yellow]
     
-    func restartGame(){
-        
+    mutating func restartGame(){
+        self = MasterMindModel()
     }
     
     mutating func recordAttempts(){
