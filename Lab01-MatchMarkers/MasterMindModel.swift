@@ -9,16 +9,16 @@ import SwiftUI
 typealias Peg = Color
 
 struct MasterMindModel {
-    var numPegs: Int
+    static var numPegs = 4
     var masterCode: Code
     var guess: Code
     var attempts: [Code] = [Code]()
     var pegChoice: [Peg] = [.red, .blue, .green, .yellow]
     
     init (gameSize: Int){
-        self.numPegs = gameSize
-        self.masterCode = Code(kind: .master, pegs: setCode(size: gameSize))
-        self.guess = Code(kind: .guess, pegs: setCode(size: gameSize))
+        MasterMindModel.numPegs = gameSize
+        self.masterCode = Code(kind: .master)
+        self.guess = Code(kind: .guess)
     }
     
     mutating func restartGame(){
@@ -54,7 +54,7 @@ struct MasterMindModel {
 
 struct Code{
     var kind: Kind
-    var pegs: [Peg]
+    var pegs: [Peg] = setCode(size: MasterMindModel.numPegs)
     static let missing: Peg = .clear
     
     enum Kind : Equatable{
