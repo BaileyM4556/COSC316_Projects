@@ -9,13 +9,20 @@ import SwiftUI
 typealias Peg = Color
 
 struct MasterMindModel {
-    var masterCode: Code = Code(kind: .master)
-    var guess: Code = Code(kind: .guess)
+    var numPegs: Int
+    var masterCode: Code
+    var guess: Code
     var attempts: [Code] = [Code]()
     var pegChoice: [Peg] = [.red, .blue, .green, .yellow]
     
+    init (gameSize: Int){
+        self.numPegs = gameSize
+        self.masterCode = Code(kind: .master, pegs: setCode(size: gameSize))
+        self.guess = Code(kind: .guess, pegs: setCode(size: gameSize))
+    }
+    
     mutating func restartGame(){
-        self = MasterMindModel()
+        self = MasterMindModel(gameSize: Int.random(in: 3...6))
     }
     
     mutating func recordAttempts(){
@@ -47,7 +54,7 @@ struct MasterMindModel {
 
 struct Code{
     var kind: Kind
-    var pegs: [Peg] = [.red, .red, .blue, .green]
+    var pegs: [Peg]
     static let missing: Peg = .clear
     
     enum Kind : Equatable{
@@ -58,11 +65,13 @@ struct Code{
     
     var matches: [Match] {
         switch kind {
-            case .attempt(let matches) : return matches
-            case .master, .guess: return []
+        case .attempt(let matches) : return matches
+        case .master, .guess: return []
         }
         
     }
+    
+    
     
     func match(against otherCode: Code) -> [Match] {
         var results: [Match] = Array(repeating: .noMatch, count: pegs.count)
@@ -88,6 +97,15 @@ struct Code{
         return results
         
     }
+}
+
+func setCode(size: Int) -> [Peg] {
+    var codePegs: [Peg] = []
+    let pegChoice: [Peg] = [.red,.blue,.yellow,.green]
+    for _ in 1...size{
+        codePegs.append(pegChoice[Int.random(in: 0...3)])
+    }
+    return codePegs
 }
 
 

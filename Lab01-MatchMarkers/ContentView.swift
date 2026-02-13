@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MatchMarkersView: View {
-    @State var game = MasterMindModel()
+    @State var game = MasterMindModel(gameSize: 4)
     
     var body: some View {
         VStack{
